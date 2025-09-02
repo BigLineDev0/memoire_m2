@@ -1,0 +1,1 @@
+<script src="{{ asset('assets/js/laboratoires/detail.js') }}"></script>
