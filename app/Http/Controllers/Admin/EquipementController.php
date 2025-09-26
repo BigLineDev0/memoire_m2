@@ -104,7 +104,7 @@ class EquipementController extends Controller
         foreach ($techniciens as $technicien) {
             Notification::create([
                 'user_id'       => $technicien->id,
-                'message'       => "L’équipement {$equipement->nom} a été alerté pour maintenance.",
+                'message'       => "L’équipement {$equipement->nom} a été signalé en maintenance par {$admin->prenom} {$admin->name}.",
                 'type'          => 'maintenance',
                 'is_read'       => false,
             ]);
@@ -113,14 +113,14 @@ class EquipementController extends Controller
         // 4. Créer une notification pour l’admin
         Notification::create([
             'user_id'       => $admin->id,
-            'message'       => "Vous avez alerté l’équipement {$equipement->nom} pour maintenance.",
+            'message'       => "Vous avez signalé l’équipement {$equipement->nom} pour maintenance.",
             'type'          => 'maintenance',
             'is_read'       => false,
         ]);
 
         // 5. Retour avec message flash
         return redirect()->route('admin.equipements.index')
-            ->with('success', "Équipement {$equipement->nom} alerté pour une maintenance.");
+            ->with('success', "Équipement {$equipement->nom} signalé pour une maintenance.");
     }
 
     // Import CSV

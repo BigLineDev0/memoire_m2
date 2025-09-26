@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('equipement_id')->constrained('equipements')->onDelete('cascade');
             $table->text('description')->nullable();
             $table->date('date_prevue');
-            $table->enum('statut', ['en_cours', 'termine'])->default('en_cours');
+            $table->enum('statut', ['en_cours', 'termine', 'annule'])->default('en_cours');
             $table->timestamps();
         });
     }

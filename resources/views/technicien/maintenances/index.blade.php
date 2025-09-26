@@ -77,7 +77,7 @@
                                         </a>
 
                                         <!-- Annuler -->
-                                        <form action="{{ route('admin.maintenances.annuler', $maintenance->id) }}"
+                                        <form action="{{ route('technicien.maintenances.annuler', $maintenance->id) }}"
                                             method="POST" style="display:inline;">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-danger"
@@ -87,17 +87,7 @@
                                         </form>
                                     @endif
 
-                                    @if (in_array($maintenance->statut, ['termine', 'annule']) && auth()->user()->role === 'admin')
-                                        <form action="{{ route('admin.maintenances.destroy', $maintenance->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Supprimer cette maintenance ?')">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    @endif
+                                   
                                 </td>
                             </tr>
                             <!-- Modal Marquer Terminer -->
@@ -105,7 +95,7 @@
                                 aria-hidden="true">
                                 <div class="modal-dialog">
                                     <form id="formPlanifier" method="POST"
-                                        action="{{ route('admin.maintenances.terminer', $maintenance->id) }}">
+                                        action="{{ route('technicien.maintenances.terminer', $maintenance->id) }}">
                                         @csrf
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -139,7 +129,7 @@
     <!-- Modal Planifier -->
     <div class="modal fade" id="planifierModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="formPlanifier" method="POST" action="{{ route('admin.maintenances.planifier') }}">
+            <form id="formPlanifier" method="POST" action="{{ route('technicien.maintenances.planifier') }}">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -147,16 +137,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label>Technicien</label>
-                            <select name="user_id" class="form-control" required>
-                                <option value="">-- Sélectionner --</option>
-                                @foreach ($techniciens as $tech)
-                                    <option value="{{ $tech->id }}">{{ $tech->prenom }} {{ $tech->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
+                        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
                         <div class="form-group">
                             <label>Equipements</label>
                             <select name="equipement_id" class="form-control" required>

@@ -13,4 +13,10 @@ class Equipement extends Model
     {
         return $this->belongsToMany(Laboratoire::class, 'equipement_laboratoire');
     }
+
+    public function maintenances()
+    {
+        return $this->hasMany(Maintenance::class);
+    }
+
 }
