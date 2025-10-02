@@ -98,14 +98,49 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row">
-        <div class="col-lg-6">
+     <div class="row">
+        <div class="col-lg-8">
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Maintenance du jour</h6>
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Maintenances du jour : {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h6>
                 </div>
                 <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, fuga.
+                    @if ($recent_maintenances->isEmpty())
+                        <p class="text-muted">Aucune maintenance aujourd'hui.</p>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Technicien</th>
+                                        <th>Équipement</th>
+                                        <th>Date</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($recent_maintenances as $maintenance)
+                                        <tr>
+                                            <td>{{ $maintenance->user->prenom }} {{ $maintenance->user->name }}</td>
+                                            <td>{{ $maintenance->equipement->nom }}</td>
+                                            <td>{{ $maintenance->created_at->format('d/m/Y à H:i') }}</td>
+                                            <td>
+                                                @if ($maintenance->statut === 'en_cours')
+                                                    <span class="badge badge-warning text-white">En Cours</span>
+                                                @elseif ($maintenance->statut === 'termine')
+                                                    <span class="badge badge-success text-white">Terminée</span>
+                                                @elseif ($maintenance->statut === 'annule')
+                                                    <span class="badge badge-danger text-white">Annulée</span>
+                                                @else
+                                                    <span class="badge badge-secondary text-white">Inconnue</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

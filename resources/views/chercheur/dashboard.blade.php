@@ -98,14 +98,56 @@
 
     <!-- Content Row -->
 
+    <!-- Réservations du jour -->
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Réservation du jour</h6>
+                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Réservations du jour: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</h6>
                 </div>
                 <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, fuga.
+                    @if ($recent_reservations->isEmpty())
+                        <p class="text-muted">Aucune réservation aujourd'hui.</p>
+                    @else
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Utilisateur</th>
+                                        <th>Laboratoire & Équipements</th>
+                                        <th>Horaires</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($recent_reservations as $reservation)
+                                        <tr>
+                                            <td>
+                                                <strong>{{ $reservation->user->prenom }} {{ $reservation->user->name }}</strong><br>
+                                                <small class="text-muted">{{ $reservation->user->telephone ?? 'N/A' }}</small>
+                                            </td>
+                                            <td>
+                                                <strong>{{ $reservation->laboratoire->nom }}</strong><br>
+                                                <small class="text-muted">
+                                                    {{ $reservation->equipements->pluck('nom')->join(', ') ?: 'Aucun' }}
+                                                </small>
+                                            </td>
+                                            <td>
+                                                @foreach ($reservation->horaires as $horaire)
+                                                    <span class="badge bg-primary text-white mb-2">
+                                                        {{ $horaire->debut }} - {{ $horaire->fin }}
+                                                    </span><br>
+                                                @endforeach
+                                            </td>
+                                            <td class="text-center">
+                                                {{ $reservation->created_at->format('d/m/Y à H:i') }}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

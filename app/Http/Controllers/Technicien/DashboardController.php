@@ -15,6 +15,12 @@ class DashboardController extends Controller
             ->latest()
             ->paginate(10);
 
+        $recent_maintenances = auth()->user()->maintenances()->with(['equipement', 'user'])
+            ->whereDate('created_at', now()->toDateString())
+            ->latest()
+            ->take(5)
+            ->get();
+
         $stats = [
             'equipement_maintenances' => Equipement::where('statut', 'maintenance')->count(),
             'equipement_disponibles' => Equipement::where('statut', ['disponible', 'reserve'])->count(),
@@ -23,6 +29,6 @@ class DashboardController extends Controller
             'total_maintenances' => auth()->user()->maintenances()->count(),
         ];
 
-        return view('technicien.dashboard', compact('notifications', 'stats'));
+        return view('technicien.dashboard', compact('notifications', 'stats', 'recent_maintenances'));
     }
 }

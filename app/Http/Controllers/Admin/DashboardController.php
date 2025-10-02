@@ -19,6 +19,18 @@ class DashboardController extends Controller
             ->latest()
             ->paginate(10);
 
+        $recent_reservations = Reservation::with(['user','laboratoire','equipements','horaires'])
+            ->whereDate('created_at', now()->toDateString())
+            ->latest()
+            ->take(5)
+            ->get();
+
+        $recent_maintenances = Maintenance::with(['equipement', 'user'])
+            ->whereDate('created_at', now()->toDateString())
+            ->latest()
+            ->take(5)
+            ->get();
+
         $stats = [
             'total_laboratories' => Laboratoire::count(),
             'total_equipments' => Equipement::count(),
@@ -27,6 +39,6 @@ class DashboardController extends Controller
             'active_maintenances' => Maintenance::count(),
         ];
 
-        return view('admin.dashboard', compact('notifications', 'stats'));
+        return view('admin.dashboard', compact('notifications', 'stats', 'recent_reservations', 'recent_maintenances'));
     }
 }

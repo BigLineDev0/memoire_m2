@@ -61,6 +61,16 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
+    <li class="nav-item {{ request()->routeIs('admin.horaires.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.horaires.index') }}">
+            <i class="fas fa-fw fa-clock"></i>
+            <span>Horaires</span>
+        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
     <li class="nav-item {{ request()->routeIs('admin.utilisateurs.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.utilisateurs.index') }}">
             <i class="fas fa-fw fa-users"></i>

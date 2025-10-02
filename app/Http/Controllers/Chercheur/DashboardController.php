@@ -14,6 +14,12 @@ class DashboardController extends Controller
             ->latest()
             ->paginate(10);
 
+        $recent_reservations = auth()->user()->reservations()->with(['user','laboratoire','equipements','horaires'])
+            ->whereDate('created_at', now()->toDateString())
+            ->latest()
+            ->take(5)
+            ->get();
+
         $stats = [
             'en_attente' => auth()->user()->reservations()->where('statut', 'en attente')->count(),
             'confirmees' => auth()->user()->reservations()->where('statut', 'confirme')->count(),
@@ -21,6 +27,6 @@ class DashboardController extends Controller
             'total_reservations' => auth()->user()->reservations()->count(),
         ];
 
-        return view('chercheur.dashboard', compact('notifications', 'stats'));
+        return view('chercheur.dashboard', compact('notifications', 'stats', 'recent_reservations'));
     }
 }

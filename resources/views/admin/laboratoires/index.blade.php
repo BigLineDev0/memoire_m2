@@ -6,6 +6,7 @@
         <a href="{{ route('admin.laboratoires.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Nouveau Laboratoire
         </a>
+        
     </div>
     {{-- Message de succès --}}
     @if (session('success'))

@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminRapportController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\EquipementController;
+use App\Http\Controllers\Admin\HoraireController;
 use App\Http\Controllers\Admin\LaboratoireController;
 use App\Http\Controllers\Admin\MaintenanceController;
 use App\Http\Controllers\Admin\ReservationController;
@@ -92,6 +94,13 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->name('admin.')->grou
 
     // Utilisateurs
     Route::resource('utilisateurs', UtilisateurController::class)->except(['show']);
+
+    // Horaires
+    Route::resource('horaires', HoraireController::class)->except(['show']);
+
+    // Rapports
+    Route::get('/rapport', [AdminRapportController::class, 'genererRapport'])->name('rapport');
+
 
     // Maintenances
     Route::resource('maintenances', MaintenanceController::class)->except(['create', 'edit', 'show']);
